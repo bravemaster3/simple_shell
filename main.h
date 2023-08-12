@@ -6,9 +6,11 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <string.h>
 extern char **environ;
 
 #define PROMPT "$ "
+#define UNUSED __attribute__((unused))
 
 /* Printing char and string */
 int _putchar(char c);
@@ -28,9 +30,10 @@ int ctokens(char **tokens);
 void free_grid(char **grid, int height);
 
 /* Miscelleanous */
-void exit_exec(char **tokens, int n_tok, char *buffer);
+void exit_exec(char **tokens, int n_tok, char *buffer, char *path);
+void not_found(char **tokens, int n_tok);
 void handle_signal(int sig);
 char *_getenv(const char *name);
-char *_which(char *env[], char *cmd);
+char *_which(char *cmd);
 
 #endif /* MAIN_H */
