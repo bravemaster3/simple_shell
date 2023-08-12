@@ -8,11 +8,11 @@
  */
 int _putchar(char c)
 {
-    int ret = write(1, &c, 1);
+	int ret = write(1, &c, 1);
 
-    if (ret == 1)
-        return (1);
-    return (0);
+	if (ret == 1)
+		return (1);
+	return (0);
 }
 
 /**
@@ -23,16 +23,16 @@ int _putchar(char c)
  */
 int _puts(char *str)
 {
-    int n_by = 0;
+	int n_by = 0;
 
-    if (str == NULL)
-        str = "(null)";
+	if (str == NULL)
+		str = "(null)";
 
-    while (str[n_by] != '\0')
-    {
-        _putchar(str[n_by]);
-        n_by++;
-    }
+	while (str[n_by] != '\0')
+	{
+		_putchar(str[n_by]);
+		n_by++;
+	}
 
-    return (n_by);
+	return (n_by);
 }
