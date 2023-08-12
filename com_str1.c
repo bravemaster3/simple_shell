@@ -28,20 +28,28 @@ char *_strcpy(char *dest, char *src)
  * @src: pointer to the first char of source string
  * Return: pointer to the concatenated string
  */
-
 char *_strcat(char *dest, char *src)
 {
 	int i, j;
-	const int size_dest = _strlen(dest);
-	const int size_src = _strlen(src);
+	char *result = NULL;
+	int size_dest = _strlen(dest);
+	int size_src = _strlen(src);
 
+	result = malloc((size_dest + size_src + 1) * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	for (i = 0; i <= size_dest - 1; i++)
+	{
+		result[i] = dest[i];
+	}
 	for (i = 0; i <= size_src - 1; i++)
 	{
 		j = size_dest + i;
-		dest[j] = src[i];
+		result[j] = src[i];
 	}
+	result[j + 1] = '\0';
 
-	return (dest);
+	return (result);
 }
 
 /**
@@ -86,18 +94,3 @@ char *_strdup(char *str)
 	return (str_cpy);
 }
 
-/**
- * free_grid - frees all allocated memory of a grid
- * @grid:: pointer (double pointer) to the grid
- * @height: the number of rows of the grid
- * Return: no return
- */
-
-void free_grid(char **grid, int height)
-{
-	int row = 0;
-
-	for (; row < height; row++)
-		free(grid[row]);
-	free(grid);
-}
