@@ -36,4 +36,7 @@ void handle_signal(int sig);
 char *_getenv(const char *name);
 char *_which(char *cmd);
 
+/* Builtins */
+void builtins(char **tokens, int n_tok, char *buffer);
+
 #endif /* MAIN_H */
