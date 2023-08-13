@@ -23,6 +23,13 @@ char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 char *_substr(char *str, int index);
 int _strsearch(char *hay, char *needle, int index);
+int _strcmp(char *s1, char *s2);
+
+/* Numbers */
+int _isdigit(int c);
+int _isnumber(char *str);
+int _pow(int a, int b);
+int _atoi(char *str);
 
 /* functions for handling arrays */
 char **tokenizer(char *buffer, char *delim);
@@ -38,5 +45,6 @@ char *_which(char *cmd);
 
 /* Builtins */
 void builtins(char **tokens, int n_tok, char *buffer);
+void builtin_exit(char **tokens, int n_tok, char *buffer);
 
 #endif /* MAIN_H */
