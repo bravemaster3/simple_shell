@@ -39,9 +39,7 @@ char *_strcat(char *dest, char *src)
 	if (result == NULL)
 		return (NULL);
 	for (i = 0; i <= size_dest - 1; i++)
-	{
 		result[i] = dest[i];
-	}
 	for (i = 0; i <= size_src - 1; i++)
 	{
 		j = size_dest + i;
@@ -93,4 +91,3 @@ char *_strdup(char *str)
 
 	return (str_cpy);
 }
-
