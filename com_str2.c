@@ -39,3 +39,29 @@ char *_substr(char *str, int index)
 		str++;
 	return (str);
 }
+
+/**
+ * _strcmp - compares 2 strings,
+ * @s1: pointer to string 1
+ * @s2: pointer to string 2
+ * Return: 0 if strings are the same,
+ * the difference between the first different digits otherwise
+ */
+
+int _strcmp(char *s1, char *s2)
+{
+	int stp = 0;
+	char *s1_c = s1;
+	char *s2_c = s2;
+	int ret = 0;
+
+	while (*s1_c != '\0' && *s2_c != '\0' && stp == 0)
+	{
+		ret = (*s1_c) - (*s2_c);
+		if (*s1_c != *s2_c)
+			stp = 1;
+		s1_c++;
+		s2_c++;
+	}
+	return (ret);
+}
