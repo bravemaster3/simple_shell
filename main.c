@@ -46,7 +46,6 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		if (path == NULL)
 		{
 			builtins(tokens, n_tok, buffer);
-			not_found(tokens, n_tok);
 			continue;
 		}
 		child_pid = fork();
