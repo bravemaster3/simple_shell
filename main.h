@@ -46,5 +46,6 @@ char *_which(char *cmd);
 /* Builtins */
 void builtins(char **tokens, int n_tok, char *buffer);
 void builtin_exit(char **tokens, int n_tok, char *buffer);
+void builtin_env();
 
 #endif /* MAIN_H */
