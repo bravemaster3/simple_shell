@@ -6,29 +6,34 @@
  * @n_tok: number of tokens
  * @buffer: pointer to the buffer to free
  * @path: the path
+ * @iter: current iteration
  * Return: No return
  */
-void exit_exec(char **tokens, int n_tok, char *buffer, char *path)
+void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter)
 {
 	free(path);
-	perror(_getenv("_"));
+	print_err(iter, "", "");
+	perror("");
+	/*perror(_getenv("_"));*/
 	free_grid(tokens, n_tok);
 	free(buffer);
-	exit(1);
+	exit(errno);
 }
 
 /**
  * not_found - handles error and freeing tokens and buffer on execve failure
  * @tokens: 2D pointer to the array of tokens
  * @n_tok: number of tokens
+ * @iter: current iteration
  * Return: No return
  */
-void not_found(char **tokens, int n_tok)
+void not_found(char **tokens, int n_tok, UINT iter)
 {
-	perror(_getenv("_"));
+	/*perror(_getenv("_"));*/
+	errno = 127;
+	print_err(iter, tokens[0], "not found\n");
 	free_grid(tokens, n_tok);
 }
-
 
 /**
  * handle_signal - soft exiting at a given signal (ex. CTRL+C)
@@ -78,42 +83,42 @@ char *_getenv(const char *name)
  */
 char *_which(char *cmd)
 {
-	int p, n_paths = 0;
+	int p, n_paths = 0, errno_cpy = errno;
 	char *env_path = NULL, *env_path_cpy = NULL;
 	char **paths = NULL, *path = NULL, *tmp = NULL, *tmp2 = NULL;
-	struct stat st;
+	/*struct stat st;*/
 
 	env_path = _getenv("PATH");
 	env_path_cpy = _strdup(env_path);
 	paths = tokenizer(env_path_cpy, ":");
 	free(env_path_cpy);
 	n_paths = ctokens(paths);
-	if (stat(cmd, &st) == 0)
+	/*if (stat(cmd, &st) == 0)*/
+	if (access(cmd, X_OK) == 0)
 	{
 		path = _strdup(cmd);
 		free_grid(paths, n_paths);
+		errno = errno_cpy;
 		return (path);
 	}
 	for (p = 0; p < n_paths; p++)
 	{
 		tmp = _strdup(paths[p]);
-		if (tmp == NULL)
-		{
-			perror(_getenv("_"));
-			return (NULL);
-		}
 		tmp2 = _strcat(tmp, "/");
 		free(tmp);
 		path = _strcat(tmp2, cmd);
 		free(tmp2);
-		if (stat(path, &st) == 0)
+		/*if (stat(path, &st) == 0)*/
+		if (access(path, X_OK) == 0)
 		{
 			free_grid(paths, n_paths);
+			errno = errno_cpy;
 			return (path);
 		}
 		else
 			free(path);
 	}
 	free_grid(paths, n_paths);
+	errno = errno_cpy;
 	return (NULL);
 }
