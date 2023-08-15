@@ -14,6 +14,11 @@ char **tokenizer(char *buffer, char *delim)
 
 	buff_cpy = _strdup(buffer);
 	token = strtok(buff_cpy, delim);
+	if (token == NULL)
+	{
+		free(buff_cpy);
+		return (NULL);
+	}
 	n_tok = 1;
 	while ((token = strtok(NULL, delim)))
 		n_tok++;
