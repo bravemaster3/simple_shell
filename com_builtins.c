@@ -17,6 +17,7 @@ void builtins(char **tokens, int n_tok, char *buffer)
 	}
 	else if (strcmp(cmd, "env") == 0)
 	{
+		builtin_env();
 	}
 	else if (strcmp(cmd, "cd") == 0)
 	{
@@ -62,4 +63,19 @@ void builtin_exit(char **tokens, int n_tok, char *buffer)
 	_puts(tokens[1]);
 	_putchar('\n');
 	free_grid(tokens, n_tok);
+}
+
+/**
+ * builtin_env - prints the environment of the system
+ * Return: nothing
+ */
+void builtin_env(void)
+{
+        int i = 0;
+
+        while (environ[i])
+        {
+                _puts(environ[i]);
+                i++;
+        }
 }
