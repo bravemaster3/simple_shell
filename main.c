@@ -11,11 +11,7 @@ void checks(char *buff, int n)
 	if (n == -1)
 	{
 		free(buff);
-		_putchar('\n');
-		if (errno == 127)
-			exit(2);
-		else
-			exit(errno);
+		exit(errno);
 	}
 }
 
