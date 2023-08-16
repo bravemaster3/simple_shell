@@ -1,6 +1,24 @@
 #include "main.h"
 
 /**
+ * isbuiltin - checks if a cmd is a builtin
+ * @cmd: command to check
+ * Return: 1 if a builtin, 0 otherwise
+ */
+int isbuiltin(char *cmd)
+{
+	int i = 0;
+	char *builtins[] = {"exit", "env", NULL};
+
+	while (builtins[i] != NULL)
+	{
+		if (strcmp(builtins[i], cmd) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+/**
  * builtins - handling built commands
  * @tokens: array of tokens
  * @n_tok: number of tokens
@@ -13,20 +31,14 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 	char *cmd = tokens[0];
 
 	if (strcmp(cmd, "exit") == 0)
-	{
 		builtin_exit(tokens, n_tok, buffer, iter);
-	}
 	else if (strcmp(cmd, "env") == 0)
-	{
 		builtin_env();
-	}
 	else if (strcmp(cmd, "cd") == 0)
 	{
 	}
 	else
-	{
 		not_found(tokens, n_tok, iter);
-	}
 }
 
 /**

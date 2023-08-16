@@ -63,7 +63,7 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		else
 		{
 			wait(&status);
-			errno = status;
+			/*errno = status;*/
 		}
 
 		free(path);
