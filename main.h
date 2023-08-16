@@ -55,5 +55,6 @@ char *_which(char *cmd);
 void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_env(void);
+int isbuiltin(char *cmd);
 
 #endif /* MAIN_H */
