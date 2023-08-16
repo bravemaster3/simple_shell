@@ -7,14 +7,22 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <errno.h>
+#include <sys/wait.h>
+#include <signal.h>
 extern char **environ;
 
 #define PROMPT "$ "
 #define UNUSED __attribute__((unused))
+#define UINT unsigned int
 
-/* Printing char and string */
+/* Printing char, string and uint*/
 int _putchar(char c);
+int _putchar2(char c, int fd);
 int _puts(char *str);
+int _puts2(char *str, int fd);
+int print_uint(unsigned int n, int fd);
+void print_err(UINT iter, char *cmd, char *message);
 
 /* String operations */
 char *_strdup(char *str);
@@ -37,15 +45,16 @@ int ctokens(char **tokens);
 void free_grid(char **grid, int height);
 
 /* Miscelleanous */
-void exit_exec(char **tokens, int n_tok, char *buffer, char *path);
-void not_found(char **tokens, int n_tok);
+void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter);
+void not_found(char **tokens, int n_tok, UINT iter);
 void handle_signal(int sig);
 char *_getenv(const char *name);
 char *_which(char *cmd);
 
 /* Builtins */
-void builtins(char **tokens, int n_tok, char *buffer);
-void builtin_exit(char **tokens, int n_tok, char *buffer);
-void builtin_env();
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
+void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
+void builtin_env(void);
+int isbuiltin(char *cmd);
 
 #endif /* MAIN_H */

@@ -11,8 +11,15 @@ Run the shell
 /bin/ls
 exit 98
 ```
-# Builtin commands
+## Builtin commands
 
 * exit: Usage --> "exit" OR "exit status". When more than one additinal arguments are found, the others are ignored.
 * env:
+
+##NOTES
+
+* if the argument is only spaces? Token is NULL. Not handled before!! NOW HANDLED, and TASK 1 ALL CHECKED OK
+* Task 2, ALL CHECKED OK
+* We were printing to the stdout even errors... This was causing a lot more errors when using the checker. I have now made _putchar2 and _puts2 which take in also a file descriptor. Now, Task 3 is almost all green! Yey!! Only one left to solve.
+* task 5 has never passed any checks
 

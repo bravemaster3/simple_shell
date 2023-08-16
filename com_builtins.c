@@ -1,31 +1,44 @@
 #include "main.h"
 
 /**
+ * isbuiltin - checks if a cmd is a builtin
+ * @cmd: command to check
+ * Return: 1 if a builtin, 0 otherwise
+ */
+int isbuiltin(char *cmd)
+{
+	int i = 0;
+	char *builtins[] = {"exit", "env", NULL};
+
+	while (builtins[i] != NULL)
+	{
+		if (strcmp(builtins[i], cmd) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+/**
  * builtins - handling built commands
  * @tokens: array of tokens
  * @n_tok: number of tokens
  * @buffer: the buffer
+ * @iter: current iteration
  * Return: nothing
  */
-void builtins(char **tokens, int n_tok, char *buffer)
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 {
 	char *cmd = tokens[0];
 
 	if (strcmp(cmd, "exit") == 0)
-	{
-		builtin_exit(tokens, n_tok, buffer);
-	}
+		builtin_exit(tokens, n_tok, buffer, iter);
 	else if (strcmp(cmd, "env") == 0)
-	{
 		builtin_env();
-	}
 	else if (strcmp(cmd, "cd") == 0)
 	{
 	}
 	else
-	{
-		not_found(tokens, n_tok);
-	}
+		not_found(tokens, n_tok, iter);
 }
 
 /**
@@ -33,15 +46,16 @@ void builtins(char **tokens, int n_tok, char *buffer)
  * @tokens: array of tokens
  * @n_tok: number of tokens
  * @buffer: the buffer
+ * @iter: current iteration
  * Return: nothing
  */
 
-void builtin_exit(char **tokens, int n_tok, char *buffer)
+void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter)
 {
 	int status, isvalid_status = 1;
 
 	if (tokens[1] == NULL)
-		status = 0;
+		status = errno;
 	else if (_isnumber(tokens[1]) && _atoi(tokens[1]) >= 0)
 	{
 		if (_atoi(tokens[1]) <= 255)
@@ -52,16 +66,16 @@ void builtin_exit(char **tokens, int n_tok, char *buffer)
 	else
 		isvalid_status = 0;
 
-	if (isvalid_status)
+	if (isvalid_status == 1)
 	{
 		free(buffer);
 		free_grid(tokens, n_tok);
 		exit(status);
 	}
-	_puts(_getenv("_"));
-	_puts(": exit: Illegal number: ");
-	_puts(tokens[1]);
-	_putchar('\n');
+	print_err(iter, tokens[0], "Illegal number: ");
+	_puts2(tokens[1], 2);
+	_putchar2('\n', 2);
+	errno = 2;
 	free_grid(tokens, n_tok);
 }
 
@@ -71,11 +85,11 @@ void builtin_exit(char **tokens, int n_tok, char *buffer)
  */
 void builtin_env(void)
 {
-        int i = 0;
+	int i = 0;
 
-        while (environ[i])
-        {
-                _puts(environ[i]);
-                i++;
-        }
+	while (environ[i])
+	{
+		_puts(environ[i]);
+		i++;
+	}
 }
