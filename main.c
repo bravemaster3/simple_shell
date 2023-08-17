@@ -24,15 +24,13 @@ void checks(char *buff, int n)
  */
 int main(UNUSED int ac, UNUSED char **av, char **env)
 {
-	size_t size = 0;
-	ssize_t n_chars;
+	size_t size = 0, iter = 0, n_chars = 0;
 	int n_tok, status, mode = isatty(0);
-	UINT iter = 0;
 	char *buffer = NULL, *delim = " \"\n", **tokens, *path;
 	pid_t child_pid;
 
-	signal(SIGINT, handle_signal);
 	errno = 0;
+	signal(SIGINT, handle_signal);
 	while (1)
 	{
 		iter++;
@@ -41,7 +39,7 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		n_chars = getline(&buffer, &size, stdin);
 		if (n_chars == 1 && buffer[0] == '\n')
 			continue;
-		checks(buffer, n_chars); /*CTRL+D implementation is here*/
+		checks(buffer, n_chars);
 		tokens = tokenizer(buffer, delim);
 		n_tok = ctokens(tokens);
 		if (tokens == NULL)
@@ -59,13 +57,8 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		{
 			if (execve(path, tokens, env) == -1)
 				exit_exec(tokens, n_tok, buffer, path, iter);
-		}
-		else
-		{
+		} else
 			wait(&status);
-			/*errno = status;*/
-		}
-
 		free(path);
 		free_grid(tokens, n_tok);
 	}
