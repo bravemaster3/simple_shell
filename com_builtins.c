@@ -12,7 +12,7 @@ int isbuiltin(char *cmd)
 
 	while (builtins[i] != NULL)
 	{
-		if (strcmp(builtins[i], cmd) == 0)
+		if (_strcmp(builtins[i], cmd) == 0)
 			return (1);
 		i++;
 	}
@@ -30,11 +30,11 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 {
 	char *cmd = tokens[0];
 
-	if (strcmp(cmd, "exit") == 0)
+	if (_strcmp(cmd, "exit") == 0)
 		builtin_exit(tokens, n_tok, buffer, iter);
-	else if (strcmp(cmd, "env") == 0)
+	else if (_strcmp(cmd, "env") == 0)
 		builtin_env();
-	else if (strcmp(cmd, "cd") == 0)
+	else if (_strcmp(cmd, "cd") == 0)
 	{
 	}
 	else

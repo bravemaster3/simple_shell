@@ -14,7 +14,6 @@ void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter)
 	free(path);
 	print_err(iter, "", "");
 	perror("");
-	/*perror(_getenv("_"));*/
 	free_grid(tokens, n_tok);
 	free(buffer);
 	exit(errno);
@@ -93,7 +92,6 @@ char *_which(char *cmd)
 	paths = tokenizer(env_path_cpy, ":");
 	free(env_path_cpy);
 	n_paths = ctokens(paths);
-	/*if (stat(cmd, &st) == 0)*/
 	if (access(cmd, X_OK) == 0)
 	{
 		path = _strdup(cmd);
@@ -108,7 +106,6 @@ char *_which(char *cmd)
 		free(tmp);
 		path = _strcat(tmp2, cmd);
 		free(tmp2);
-		/*if (stat(path, &st) == 0)*/
 		if (access(path, X_OK) == 0)
 		{
 			free_grid(paths, n_paths);
@@ -119,6 +116,7 @@ char *_which(char *cmd)
 			free(path);
 	}
 	free_grid(paths, n_paths);
-	errno = errno_cpy;
+	if (errno == 0 && isbuiltin(cmd))
+		errno = 2;
 	return (NULL);
 }
