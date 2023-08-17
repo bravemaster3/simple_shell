@@ -116,7 +116,9 @@ char *_which(char *cmd)
 			free(path);
 	}
 	free_grid(paths, n_paths);
-	if (errno == 0 && isbuiltin(cmd))
+	if (isatty(STDIN_FILENO) && errno == 0)
 		errno = 2;
+	else
+		errno = errno_cpy;
 	return (NULL);
 }
