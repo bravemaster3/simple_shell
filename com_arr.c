@@ -19,7 +19,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		*n = 64;
 		*lineptr = malloc(*n * sizeof(char));
 		if (*lineptr == NULL)
-			return -1;
+			return (-1);
 	}
 	fd = stream->_fileno;
 	if (fd == -1)
@@ -29,9 +29,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 	{
 		total += n_read;
 		if ((*lineptr)[total - 1] == '\n')
-		{
 			(*lineptr)[total - 1] = '\0';
-		}
 		if ((size_t)total >= *n)
 		{
 			*n *= 2;
