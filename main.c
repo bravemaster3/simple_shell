@@ -4,15 +4,41 @@
  * checks - does some simple checks before exiting on CTRL+D
  * @buff: the buffer
  * @n: the number of chars
+ * @mode: 1 for interactive, 0 otherwise
  * Return: nothing
  */
-void checks(char *buff, int n)
+void checks(char *buff, int n, int mode)
 {
 	if (n == -1)
 	{
 		free(buff);
+		if (mode == 1)
+			_putchar('\n');
 		exit(errno);
 	}
+}
+
+/**
+ * wait_on_child - wrapper for process waiting on child, and fetching errno
+ * @status: status integer that will be set after process exists
+ * Return: no return
+ */
+void wait_on_child(int *status)
+{
+	wait(status);
+	errno = _WEXITSTATUS(*status);
+}
+/**
+ * free_path_tokens - wrapper for freeing both path and tokens
+ * @path: a string representing a path
+ * @tokens: a 2D array of tokens
+ * @n_tok: the number of tokens in tokens
+ * Return: no return
+ */
+void free_path_tokens(char *path, char **tokens, int n_tok)
+{
+	free(path);
+	free_grid(tokens, n_tok);
 }
 
 /**
@@ -34,12 +60,11 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 	while (1)
 	{
 		iter++;
-		if (mode == 1)
-			_puts(PROMPT);
+		(mode == 1) ? _puts(PROMPT) : 0;
 		n_chars = getline(&buffer, &size, stdin);
 		if (n_chars == 1 && buffer[0] == '\n')
 			continue;
-		checks(buffer, n_chars);
+		checks(buffer, n_chars, mode);
 		tokens = tokenizer(buffer, delim);
 		n_tok = ctokens(tokens);
 		if (tokens == NULL)
@@ -58,9 +83,8 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 			if (execve(path, tokens, env) == -1)
 				exit_exec(tokens, n_tok, buffer, path, iter);
 		} else
-			wait(&status);
-		free(path);
-		free_grid(tokens, n_tok);
+			wait_on_child(&status);
+		free_path_tokens(path, tokens, n_tok);
 	}
 	free(buffer);
 	return (0);

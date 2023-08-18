@@ -85,20 +85,12 @@ char *_which(char *cmd)
 	int p, n_paths = 0, errno_cpy = errno;
 	char *env_path = NULL, *env_path_cpy = NULL;
 	char **paths = NULL, *path = NULL, *tmp = NULL, *tmp2 = NULL;
-	/*struct stat st;*/
 
 	env_path = _getenv("PATH");
 	env_path_cpy = _strdup(env_path);
 	paths = tokenizer(env_path_cpy, ":");
 	free(env_path_cpy);
 	n_paths = ctokens(paths);
-	if (access(cmd, X_OK) == 0)
-	{
-		path = _strdup(cmd);
-		free_grid(paths, n_paths);
-		errno = errno_cpy;
-		return (path);
-	}
 	for (p = 0; p < n_paths; p++)
 	{
 		tmp = _strdup(paths[p]);
@@ -115,10 +107,18 @@ char *_which(char *cmd)
 		else
 			free(path);
 	}
-	free_grid(paths, n_paths);
-	if (isatty(STDIN_FILENO) && errno == 0)
-		errno = 2;
-	else
+	if (access(cmd, X_OK) == 0)
+	{
+		path = _strdup(cmd);
 		errno = errno_cpy;
+		if (is_path(path))
+		{
+			free_grid(paths, n_paths);
+			return (path);
+		}
+		free(path);
+	}
+	free_grid(paths, n_paths);
+	errno = errno_cpy;
 	return (NULL);
 }

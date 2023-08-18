@@ -90,6 +90,7 @@ void builtin_env(void)
 	while (environ[i])
 	{
 		_puts(environ[i]);
+		_putchar('\n');
 		i++;
 	}
 }

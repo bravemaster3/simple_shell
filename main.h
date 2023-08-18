@@ -10,11 +10,14 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <fcntl.h>
 extern char **environ;
 
 #define PROMPT "$ "
 #define UNUSED __attribute__((unused))
 #define UINT unsigned int
+#define RESTR restrict
+#define _WEXITSTATUS(status) (((status)&0xff00) >> 8)
 
 /* Printing char, string and uint*/
 int _putchar(char c);
@@ -40,6 +43,7 @@ int _pow(int a, int b);
 int _atoi(char *str);
 
 /* functions for handling arrays */
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char **tokenizer(char *buffer, char *delim);
 int ctokens(char **tokens);
 void free_grid(char **grid, int height);
@@ -50,6 +54,7 @@ void not_found(char **tokens, int n_tok, UINT iter);
 void handle_signal(int sig);
 char *_getenv(const char *name);
 char *_which(char *cmd);
+int is_path(char *str);
 
 /* Builtins */
 void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
