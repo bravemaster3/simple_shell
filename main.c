@@ -61,7 +61,7 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 	{
 		iter++;
 		(mode == 1) ? _puts(PROMPT) : 0;
-		n_chars = getline(&buffer, &size, stdin);
+		n_chars = _getline(&buffer, &size, stdin);
 		if (n_chars == 1 && buffer[0] == '\n')
 			continue;
 		checks(buffer, n_chars, mode);

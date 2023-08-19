@@ -36,6 +36,9 @@ char *_substr(char *str, int index);
 int _strsearch(char *hay, char *needle, int index);
 int _strcmp(char *s1, char *s2);
 
+/* Memory allocation */
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
 /* Numbers */
 int _isdigit(int c);
 int _isnumber(char *str);
