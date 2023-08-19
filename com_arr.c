@@ -9,44 +9,38 @@
  */
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-	ssize_t n_read = 0, total = 0;
+	size_t total = 0;
 	int fd;
+	unsigned char c;
+	char *new_ptr;
 
-	if (lineptr == NULL || n == NULL)
+	if (lineptr == NULL || n == NULL || stream == NULL)
 		return (-1);
 	if (*lineptr == NULL || *n == 0)
 	{
 		*n = 64;
-		*lineptr = malloc(*n * sizeof(char));
+		*lineptr = (char *)malloc(*n);
 		if (*lineptr == NULL)
 			return (-1);
 	}
 	fd = stream->_fileno;
-	if (fd == -1)
-		return (-1);
-
-	while ((n_read = read(fd, *lineptr + total, *n - total - 1)) > 0)
+	while ((read(fd, &c, 1)) == 1)
 	{
-		total += n_read;
-		if ((*lineptr)[total - 1] == '\n')
-			(*lineptr)[total - 1] = '\0';
-		if ((size_t)total >= *n)
+		if (total >= *n - 1)
 		{
 			*n *= 2;
-			*lineptr = realloc(*lineptr, *n);
-			if (*lineptr == NULL)
-				return (-1);
+			new_ptr = (char *)_realloc(*lineptr, (*n) / 2, *n);
+			if (new_ptr == NULL)
+				return (-1);/*return((free(*lineptr)), -1);*/
+			*lineptr = new_ptr;
 		}
+		(*lineptr)[total] = c;
+		total++;
+		if (c == '\n')
+			return (((*lineptr)[total] = '\0'), total);
 	}
-	if (n_read < 0) /* if the loop exits on a failed read */
-		return (-1);
-	if (n_read == 0 && total > 0)
-	{
-		(*lineptr)[total] = '\0';
-		return (total);
-	}
-	if (n_read == 0 && total == 0)
-		return (-1);
+	if (total > 0)
+		return (((*lineptr)[total] = '\0'), total);
 	return (-1);
 }
 
