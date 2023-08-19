@@ -57,14 +57,14 @@ char **tokenizer(char *buffer, char *delim)
 	int n_tok, counter;
 
 	buff_cpy = _strdup(buffer);
-	token = strtok(buff_cpy, delim);
+	token = _strtok(buff_cpy, delim);
 	if (token == NULL)
 	{
 		free(buff_cpy);
 		return (NULL);
 	}
 	n_tok = 1;
-	while ((token = strtok(NULL, delim)))
+	while ((token = _strtok(NULL, delim)))
 		n_tok++;
 	free(buff_cpy);
 
@@ -74,12 +74,12 @@ char **tokenizer(char *buffer, char *delim)
 		perror("Memory allocation failed\n");
 		exit(1);
 	}
-	token = strtok(buffer, delim);
+	token = _strtok(buffer, delim);
 	counter = 0;
 	while (token)
 	{
 		tokens[counter] = _strdup(token);
-		token = strtok(NULL, delim);
+		token = _strtok(NULL, delim);
 		counter++;
 	}
 	tokens[n_tok] = NULL;
