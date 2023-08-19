@@ -35,6 +35,7 @@ char *_strcpy(char *dest, char *src);
 char *_substr(char *str, int index);
 int _strsearch(char *hay, char *needle, int index);
 int _strcmp(char *s1, char *s2);
+char *_strtok(char *src, char *delim);
 
 /* Memory allocation */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -64,5 +65,7 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_env(void);
 int isbuiltin(char *cmd);
+void builtin_setenv(char *var, char *value);
+void builtin_unsetenv(char *var);
 
 #endif /* MAIN_H */

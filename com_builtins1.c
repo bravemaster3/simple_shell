@@ -34,8 +34,16 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 		builtin_exit(tokens, n_tok, buffer, iter);
 	else if (_strcmp(cmd, "env") == 0)
 		builtin_env();
-	else if (_strcmp(cmd, "cd") == 0)
+	else if (_strcmp(cmd, "setenv") == 0)
 	{
+		if (n_tok < 3 || n_tok > 3)
+			_puts2("setenv: Usage: setenv VARIABLE VALUE\n", STDERR_FILENO);
+		builtin_setenv(tokens[1], tokens[2]);
+	} else if (_strcmp(cmd, "unsetenv") == 0)
+	{
+		if (n_tok < 2 || n_tok > 2)
+			_puts2("unsetenv: Usage: unsetenv VARIABLE\n", STDERR_FILENO);
+		builtin_unsetenv(tokens[1]);
 	}
 	else
 		not_found(tokens, n_tok, iter);

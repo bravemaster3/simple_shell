@@ -19,3 +19,66 @@ int is_path(char *str)
 	/*free(path);*/
 	return (0);
 }
+
+/**
+ * isdelim - checks whether the given character is part of the delimiter
+ * @c: the character
+ * @delim: the delimeter string
+ * Return: 1 - if true, and 0 if not
+ */
+int isdelim(char c, char *delim)
+{
+	while (*delim != '\0')
+	{
+		if (c == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
+}
+
+/**
+ * _strtok - extract tokens from a given string
+ * @src: the source string
+ * @delim: the delimiter
+ * Return: a pointer to the next toke, or NULL if there are no more tokens
+ */
+char *_strtok(char *src, char *delim)
+{
+	static char *bkp;
+	char *ret;
+
+	if (src == NULL)
+		src = bkp;
+	if (src == NULL)
+		return (NULL);
+
+	while (1)
+	{
+		if (isdelim(*src, delim))
+		{
+			src++;
+			continue;
+		}
+		if (*src == '\0')
+			return (NULL);
+		break;
+	}
+	ret = src;
+	while (1)
+	{
+		if (*src == '\0')
+		{
+			bkp = src;
+			return (ret);
+		}
+
+		if (isdelim(*src, delim))
+		{
+			*src = '\0';
+			bkp = src + 1;
+			return (ret);
+		}
+		src++;
+	}
+}
