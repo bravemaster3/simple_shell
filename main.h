@@ -65,5 +65,7 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_env(void);
 int isbuiltin(char *cmd);
+void builtin_setenv(char *var, char *value);
+void builtin_unsetenv(char *var);
 
 #endif /* MAIN_H */
