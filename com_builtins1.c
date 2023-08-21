@@ -37,12 +37,18 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 	else if (_strcmp(cmd, "setenv") == 0)
 	{
 		if (n_tok < 3 || n_tok > 3)
+		{
 			_puts2("setenv: Usage: setenv VARIABLE VALUE\n", STDERR_FILENO);
+			return;
+		}
 		builtin_setenv(tokens[1], tokens[2]);
 	} else if (_strcmp(cmd, "unsetenv") == 0)
 	{
 		if (n_tok < 2 || n_tok > 2)
+		{
 			_puts2("unsetenv: Usage: unsetenv VARIABLE\n", STDERR_FILENO);
+			return;
+		}
 		builtin_unsetenv(tokens[1]);
 	}
 	else
