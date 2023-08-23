@@ -69,19 +69,19 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		n_tok = ctokens(tokens);
 		if (tokens == NULL)
 			continue;
-		path = _which(tokens[0]);
+		path = _which(tokens[0], env);
 		if (path == NULL)
 		{
-			builtins(tokens, n_tok, buffer, iter);
+			env = builtins(tokens, n_tok, buffer, iter, env);
 			continue;
 		}
 		child_pid = fork();
 		if (child_pid < 0)
-			exit_exec(tokens, n_tok, buffer, path, iter);
+			exit_exec(tokens, n_tok, buffer, path, iter, env);
 		else if (child_pid == 0)
 		{
 			if (execve(path, tokens, env) == -1)
-				exit_exec(tokens, n_tok, buffer, path, iter);
+				exit_exec(tokens, n_tok, buffer, path, iter, env);
 		}
 		else
 			wait_on_child(&status);
