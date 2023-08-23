@@ -52,7 +52,6 @@ char **env_cpy2(char **dest, int sind, int eind, char **env)
 
 	for (i = sind; i < eind; i++)
 		dest[i] = _strdup(env[i]);
-
 	return (dest);
 }
 
@@ -66,18 +65,19 @@ char **env_cpy2(char **dest, int sind, int eind, char **env)
 char **builtin_setenv2(char *var, char *value, char **env)
 {
 	char **env_dup;
-	char *tmp;
+	char *tmp, *tmp_full;
 	int env_size = cenvs2(env);
 	int var_index;
 
 	tmp = _strcat(var, "=");
-	env_dup = (char **)malloc((env_size + 1) * sizeof(char *));
+	tmp_full = _strcat(tmp, value);
+	free(tmp);
+	env_dup = malloc((env_size + 1) * sizeof(char *));
 	if (_getenv(var, env) == NULL)
 	{
-		/* Do create new variable and set it's value */
 		env_dup = env_cpy2(env_dup, 0, env_size, env);
 		var_index = env_size;
-		env_dup[var_index] = _strcat(tmp, value);
+		env_dup[var_index] = _strdup(tmp_full);
 		env_dup[env_size + 1] = NULL;
 	}
 	else
@@ -85,11 +85,11 @@ char **builtin_setenv2(char *var, char *value, char **env)
 		/* Do re-allocation of the variable */
 		var_index = eindex2(var, env);
 		env_dup = env_cpy2(env_dup, 0, var_index, env);
-		env_dup[var_index] = _strcat(tmp, value);
+		env_dup[var_index] = _strdup(tmp_full);
 		env_dup = env_cpy2(env_dup, var_index + 1, env_size, env);
 		env_dup[env_size + 1] = NULL;
 	}
-	free(tmp);
+	free(tmp_full);
 	env = env_dup;
 	return (env);
 }
