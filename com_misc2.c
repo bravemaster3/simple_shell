@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 /**
  * is_path - checks if a string is a path
  * we do so just by testing if a given string starts with / or ./
@@ -19,6 +20,7 @@ int is_path(char *str)
 	/*free(path);*/
 	return (0);
 }
+
 
 /**
  * isdelim - checks whether the given character is part of the delimiter
