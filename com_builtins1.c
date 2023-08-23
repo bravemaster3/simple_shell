@@ -24,53 +24,50 @@ int isbuiltin(char *cmd)
  * @n_tok: number of tokens
  * @buffer: the buffer
  * @iter: current iteration
- * @env: environment passed from main
- * Return: the changed env
+ * Return: nothing
  */
-char **builtins(char **tokens, int n_tok, char *buffer, UINT iter, char **env)
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 {
 	char *cmd = tokens[0];
 
 	if (_strcmp(cmd, "exit") == 0)
-		built_exit(tokens, n_tok, buffer, iter, env);
+		builtin_exit(tokens, n_tok, buffer, iter);
 	else if (_strcmp(cmd, "env") == 0)
-		builtin_env2(env);
+		builtin_env();
 	else if (_strcmp(cmd, "setenv") == 0)
 	{
 		if (n_tok < 3 || n_tok > 3)
 		{
 			_puts2("setenv: Usage: setenv VARIABLE VALUE\n", STDERR_FILENO);
-			return (env);
+			return;
 		}
-		env = builtin_setenv2(tokens[1], tokens[2], env);
+		builtin_setenv(tokens[1], tokens[2]);
 	}
 	else if (_strcmp(cmd, "unsetenv") == 0)
 	{
 		if (n_tok < 2 || n_tok > 2)
 		{
 			_puts2("unsetenv: Usage: unsetenv VARIABLE\n", STDERR_FILENO);
-			return (env);
+			return;
 		}
-		builtin_unsetenv2(tokens[1], env);
+		builtin_unsetenv(tokens[1]);
 	}
 	else if (_strcmp(cmd, "cd") == 0)
-		env = builtin_cd(tokens, iter, env);
+		builtin_cd(tokens, iter);
 	else
-		not_found(tokens, n_tok, iter, env);
-	return (env);
+		not_found(tokens, n_tok, iter);
 }
 
 /**
- * built_exit - handles builtin command exit
+ * builtin_exit - handles builtin command exit
  * @tokens: array of tokens
  * @n_tok: number of tokens
  * @buffer: the buffer
  * @iter: current iteration
- * @ev: environment passed from main
  * Return: nothing
  */
 
-void built_exit(char **tokens, int n_tok, char *buffer, UINT iter, char **ev)
+void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter)
 {
 	int status, isvalid_status = 1;
 
@@ -92,7 +89,7 @@ void built_exit(char **tokens, int n_tok, char *buffer, UINT iter, char **ev)
 		free_grid(tokens, n_tok);
 		exit(status);
 	}
-	print_err(iter, tokens[0], "Illegal number: ", ev);
+	print_err(iter, tokens[0], "Illegal number: ");
 	_puts2(tokens[1], STDERR_FILENO);
 	_putchar2('\n', STDERR_FILENO);
 	errno = 2;
@@ -100,17 +97,16 @@ void built_exit(char **tokens, int n_tok, char *buffer, UINT iter, char **ev)
 }
 
 /**
- * builtin_env2 - prints the environment of the system
- * @env: environment passed from main
+ * builtin_env - prints the environment of the system
  * Return: nothing
  */
-void builtin_env2(char **env)
+void builtin_env(void)
 {
 	int i = 0;
 
-	while (env[i])
+	while (environ[i])
 	{
-		_puts(env[i]);
+		_puts(environ[i]);
 		_putchar('\n');
 		i++;
 	}

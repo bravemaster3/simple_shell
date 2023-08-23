@@ -89,13 +89,12 @@ int print_uint(unsigned int n, int fd)
  * @iter: currrent iteration
  * @cmd: command executed
  * @message: message to append
- * @env: environment passed from main
  * Return: No return
  */
 
-void print_err(UINT iter, char *cmd, char *message, char **env)
+void print_err(UINT iter, char *cmd, char *message)
 {
-	_puts2(_getenv("_", env), 2);
+	_puts2(_getenv("_"), 2);
 	_puts2(": ", 2);
 	print_uint(iter, 2);
 	_puts2(": ", 2);

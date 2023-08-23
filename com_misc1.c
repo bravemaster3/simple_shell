@@ -2,21 +2,20 @@
 
 /**
  * exit_exec - handles error and freeing tokens and buffer on execve failure
- * @toks: 2D pointer to the array of tokens
+ * @tokens: 2D pointer to the array of tokens
  * @n_tok: number of tokens
- * @buff: pointer to the buffer to free
- * @p: the path
- * @i: current iteration
- * @ev: environment passed from main
+ * @buffer: pointer to the buffer to free
+ * @path: the path
+ * @iter: current iteration
  * Return: No return
  */
-void exit_exec(char **toks, int n_tok, char *buff, char *p, UINT i, char **ev)
+void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter)
 {
-	free(p);
-	print_err(i, "", "", ev);
+	free(path);
+	print_err(iter, "", "");
 	perror("");
-	free_grid(toks, n_tok);
-	free(buff);
+	free_grid(tokens, n_tok);
+	free(buffer);
 	exit(errno);
 }
 
@@ -25,14 +24,13 @@ void exit_exec(char **toks, int n_tok, char *buff, char *p, UINT i, char **ev)
  * @tokens: 2D pointer to the array of tokens
  * @n_tok: number of tokens
  * @iter: current iteration
- * @env: environment passed from main
  * Return: No return
  */
-void not_found(char **tokens, int n_tok, UINT iter, char **env)
+void not_found(char **tokens, int n_tok, UINT iter)
 {
 	/*perror(_getenv("_"));*/
 	errno = 127;
-	print_err(iter, tokens[0], "not found\n", env);
+	print_err(iter, tokens[0], "not found\n");
 	free_grid(tokens, n_tok);
 }
 
@@ -51,10 +49,9 @@ void handle_signal(int sig)
 /**
  * _getenv - gets a variable from environment given its name
  * @name: variable name
- * @env: environment passed from the man
  * Return: the variable and its value as a string.
  */
-char *_getenv(const char *name, char **env)
+char *_getenv(const char *name)
 {
 	int i = 0, len_name;
 	char *var = NULL, *tmp = NULL;
@@ -65,12 +62,12 @@ char *_getenv(const char *name, char **env)
 	tmp = _strdup((char *)name);
 	var = _strcat(tmp, "=");
 	free(tmp);
-	while (env[i])
+	while (environ[i])
 	{
-		if (_strsearch(env[i], var, 0) == 1)
+		if (_strsearch(environ[i], var, 0) == 1)
 		{
 			free(var);
-			return (_substr(env[i], len_name));
+			return (_substr(environ[i], len_name));
 		}
 		i++;
 	}
@@ -81,16 +78,15 @@ char *_getenv(const char *name, char **env)
 /**
  * _which - checks the path of a command
  * @cmd: the command to check
- * @env: environment passed from main
  * Return: a pointer to the buffer holding the path, or NULL if no match
  */
-char *_which(char *cmd, char **env)
+char *_which(char *cmd)
 {
 	int p, n_paths = 0, errno_cpy = errno;
 	char *env_path = NULL, *env_path_cpy = NULL;
 	char **paths = NULL, *path = NULL, *tmp = NULL, *tmp2 = NULL;
 
-	env_path = _getenv("PATH", env);
+	env_path = _getenv("PATH");
 	env_path_cpy = _strdup(env_path);
 	paths = tokenizer(env_path_cpy, ":");
 	free(env_path_cpy);
