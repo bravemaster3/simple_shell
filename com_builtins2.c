@@ -41,14 +41,15 @@ int eindex(char *var)
  * @dest: destination array
  * @sind: start index
  * @eind: stop index
+ * @include: including on the environ index
  * Return: destination array address
  */
-char **env_cpy(char **dest, int sind, int eind)
+char **env_cpy(char **dest, int sind, int eind, int include)
 {
 	int i;
 
 	for (i = sind; i < eind; i++)
-		dest[i] = environ[i];
+		dest[i] = environ[i + include];
 
 	return (dest);
 }
@@ -63,26 +64,28 @@ void builtin_setenv(char *var, char *value)
 {
 	char **env_dup;
 	char *tmp, *tmp_full;
-	int env_size = cenvs();
+	int env_size = cenvs(), new_size;
 	int var_index;
 
 	tmp = _strcat(var, "=");
 	tmp_full = _strcat(tmp, value);
 	free(tmp);
-	env_dup = malloc((env_size + 1) * sizeof(char *));
-	if (_getenv(var) == NULL)
+	if (_getenv(var))
 	{
-		env_dup = env_cpy(env_dup, 0, env_size);
+		new_size = env_size + 1;
+		env_dup = malloc(new_size * sizeof(char *));
+		env_dup = env_cpy(env_dup, 0, new_size - 2, 0);
 		var_index = env_size;
 		env_dup[var_index] = _strdup(tmp_full);
-		env_dup[env_size + 1] = NULL;
+		env_dup[new_size - 1] = NULL;
 	} else
 	{
+		env_dup = malloc(env_size * sizeof(char *));
 		var_index = eindex(var);
-		env_dup = env_cpy(env_dup, 0, var_index);
+		env_dup = env_cpy(env_dup, 0, var_index, 0);
 		env_dup[var_index] = _strdup(tmp_full);
-		env_dup = env_cpy(env_dup, var_index + 1, env_size);
-		env_dup[env_size + 1] = NULL;
+		env_dup = env_cpy(env_dup, var_index + 1, env_size - 2, 0);
+		env_dup[env_size - 1] = NULL;
 	}
 	free(tmp_full);
 	environ = env_dup;
@@ -96,9 +99,19 @@ void builtin_setenv(char *var, char *value)
  */
 void builtin_unsetenv(char *var)
 {
+	char **env_dup;
+	int index = eindex(var);
+	int env_size = cenvs();
+
 	if (_getenv(var))
 	{
-		/* do some unsetting */
+		env_dup = malloc((env_size - 1) * sizeof(char *));
+		env_dup = env_cpy(env_dup, 0, index, 0);
+		env_dup = env_cpy(env_dup, index, env_size - 3, 1);
+		env_dup[env_size - 2] = NULL;
+
+		environ = env_dup;
+		printf("ck: %s\n", environ[index]);
 	}
 	/* do noting if the variable does not exist */
 }
