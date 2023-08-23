@@ -20,19 +20,22 @@ unsigned int cenvs(void)
  */
 int eindex(char *var)
 {
-	char *tmp_str;
+	char *tmp_str, *tmp;
 	int i = 0;
 
 	tmp_str = _strcat(var, "=");
+	tmp = _strdup(tmp_str);
+	free(tmp_str);
 	while (environ[i] != NULL)
 	{
-		if (_strsearch(environ[i], tmp_str, 0) == 1)
+		if (_strsearch(environ[i], tmp, 0) == 1)
 		{
-			free(tmp_str);
+			free(tmp);
 			return (i);
 		}
 		i++;
 	}
+	free(tmp);
 	return (-1);
 }
 
@@ -62,25 +65,25 @@ char **env_cpy(char **dest, int sind, int eind, int include)
  */
 void builtin_setenv(char *var, char *value)
 {
-	char **env_dup;
-	char *tmp, *tmp_full;
-	int env_size = cenvs(), new_size;
-	int var_index;
+	char **env_dup = NULL;
+	char *tmp = NULL, *tmp_full = NULL;
+	int env_size = cenvs(), new_size = 0;
+	int var_index = 0;
 
 	tmp = _strcat(var, "=");
 	tmp_full = _strcat(tmp, value);
 	free(tmp);
-	if (_getenv(var))
+	if (eindex(var) != -1)
 	{
-		new_size = env_size + 1;
-		env_dup = malloc(new_size * sizeof(char *));
+		new_size = env_size + 2;
+		env_dup = (char **)malloc(new_size * sizeof(char *));
 		env_dup = env_cpy(env_dup, 0, new_size - 2, 0);
 		var_index = env_size;
 		env_dup[var_index] = _strdup(tmp_full);
 		env_dup[new_size - 1] = NULL;
 	} else
 	{
-		env_dup = malloc(env_size * sizeof(char *));
+		env_dup = (char **)malloc((env_size + 1) * sizeof(char *));
 		var_index = eindex(var);
 		env_dup = env_cpy(env_dup, 0, var_index, 0);
 		env_dup[var_index] = _strdup(tmp_full);
@@ -103,7 +106,7 @@ void builtin_unsetenv(char *var)
 	int index = eindex(var);
 	int env_size = cenvs();
 
-	if (_getenv(var))
+	if (eindex(var) != -1)
 	{
 		env_dup = malloc((env_size - 1) * sizeof(char *));
 		env_dup = env_cpy(env_dup, 0, index, 0);
@@ -111,7 +114,6 @@ void builtin_unsetenv(char *var)
 		env_dup[env_size - 2] = NULL;
 
 		environ = env_dup;
-		printf("ck: %s\n", environ[index]);
 	}
 	/* do noting if the variable does not exist */
 }
