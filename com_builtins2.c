@@ -85,7 +85,6 @@ void builtin_setenv(char *var, char *value)
 		env_dup[env_size + 1] = NULL;
 	}
 	free(tmp);
-	printf("Last: %s\n", env_dup[var_index]);
 	environ = env_dup;
 }
 

@@ -52,7 +52,7 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 {
 	size_t size = 0, iter = 0, n_chars = 0;
 	int n_tok, status, mode = isatty(0);
-	char *buffer = NULL, *delim = " \"\n", **tokens, *path;
+	char *buffer = NULL, *delim = " \n", **tokens, *path;
 	pid_t child_pid;
 
 	errno = 0;
@@ -82,7 +82,8 @@ int main(UNUSED int ac, UNUSED char **av, char **env)
 		{
 			if (execve(path, tokens, env) == -1)
 				exit_exec(tokens, n_tok, buffer, path, iter);
-		} else
+		}
+		else
 			wait_on_child(&status);
 		free_path_tokens(path, tokens, n_tok);
 	}

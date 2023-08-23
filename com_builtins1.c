@@ -8,7 +8,7 @@
 int isbuiltin(char *cmd)
 {
 	int i = 0;
-	char *builtins[] = {"exit", "env", NULL};
+	char *builtins[] = {"exit", "env", "cd", "setenv", "unsetenv", NULL};
 
 	while (builtins[i] != NULL)
 	{
@@ -42,7 +42,8 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 			return;
 		}
 		builtin_setenv(tokens[1], tokens[2]);
-	} else if (_strcmp(cmd, "unsetenv") == 0)
+	}
+	else if (_strcmp(cmd, "unsetenv") == 0)
 	{
 		if (n_tok < 2 || n_tok > 2)
 		{
@@ -51,6 +52,8 @@ void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
 		}
 		builtin_unsetenv(tokens[1]);
 	}
+	else if (_strcmp(cmd, "cd") == 0)
+		builtin_cd(tokens, iter);
 	else
 		not_found(tokens, n_tok, iter);
 }
@@ -87,8 +90,8 @@ void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter)
 		exit(status);
 	}
 	print_err(iter, tokens[0], "Illegal number: ");
-	_puts2(tokens[1], 2);
-	_putchar2('\n', 2);
+	_puts2(tokens[1], STDERR_FILENO);
+	_putchar2('\n', STDERR_FILENO);
 	errno = 2;
 	free_grid(tokens, n_tok);
 }
