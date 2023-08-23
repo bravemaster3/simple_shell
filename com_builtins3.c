@@ -9,7 +9,7 @@
 void builtin_cd(char **tokens, UINT iter)
 {
 	int ret = 0;
-	char *dir, *prev = NULL, *curr = NULL, cwd[PATH_MAX];
+	char *dir, *prev = NULL, *curr = NULL, cwd[4096];
 
 	if (_getenv("OLDPWD") == NULL)
 		builtin_setenv("OLDPWD", _getenv("PWD"));
