@@ -11,6 +11,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <limits.h>
 extern char **environ;
 
 #define PROMPT "$ "
@@ -38,6 +39,7 @@ int _strcmp(char *s1, char *s2);
 char *_strtok(char *src, char *delim);
 
 /* Memory allocation */
+char *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* Numbers */
@@ -67,5 +69,6 @@ void builtin_env(void);
 int isbuiltin(char *cmd);
 void builtin_setenv(char *var, char *value);
 void builtin_unsetenv(char *var);
+void builtin_cd(char **tokens, UINT iter);
 
 #endif /* MAIN_H */
