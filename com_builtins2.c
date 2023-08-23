@@ -1,34 +1,32 @@
 #include "main.h"
 
 /**
- * cenvs2 - count environmental variables
- * @env: env gotten from the main
+ * cenvs - count environmental variables
  * Return: number of variables
  */
-unsigned int cenvs2(char **env)
+unsigned int cenvs(void)
 {
 	int i = 0;
 
-	while (env[i] != NULL)
+	while (environ[i] != NULL)
 		i++;
 	return (i);
 }
 
 /**
- * eindex2 - find the index of an existing variable
+ * eindex - find the index of an existing variable
  * @var: the variable we are looking for
- * @env: env gotten from the main
  * Return: index of the varibale, else -1
  */
-int eindex2(char *var, char **env)
+int eindex(char *var)
 {
 	char *tmp_str;
 	int i = 0;
 
 	tmp_str = _strcat(var, "=");
-	while (env[i] != NULL)
+	while (environ[i] != NULL)
 	{
-		if (_strsearch(env[i], tmp_str, 0) == 1)
+		if (_strsearch(environ[i], tmp_str, 0) == 1)
 		{
 			free(tmp_str);
 			return (i);
@@ -39,71 +37,66 @@ int eindex2(char *var, char **env)
 }
 
 /**
- * env_cpy2 - copy environmental variables
+ * env_cpy - copy environmental variables
  * @dest: destination array
  * @sind: start index
  * @eind: stop index
- * @env: env gotten from the main
  * Return: destination array address
  */
-char **env_cpy2(char **dest, int sind, int eind, char **env)
+char **env_cpy(char **dest, int sind, int eind)
 {
 	int i;
 
 	for (i = sind; i < eind; i++)
-		dest[i] = _strdup(env[i]);
+		dest[i] = environ[i];
+
 	return (dest);
 }
 
 /**
- * builtin_setenv2 - sets the environmental variable given
+ * builtin_setenv - sets the environmental variable given
  * @var: the variable
  * @value: the value of the variable
- * @env: env gotten from the main
- * Return: the changed env
+ * Return: nothing
  */
-char **builtin_setenv2(char *var, char *value, char **env)
+void builtin_setenv(char *var, char *value)
 {
 	char **env_dup;
 	char *tmp, *tmp_full;
-	int env_size = cenvs2(env);
+	int env_size = cenvs();
 	int var_index;
 
 	tmp = _strcat(var, "=");
 	tmp_full = _strcat(tmp, value);
 	free(tmp);
 	env_dup = malloc((env_size + 1) * sizeof(char *));
-	if (_getenv(var, env) == NULL)
+	if (_getenv(var) == NULL)
 	{
-		env_dup = env_cpy2(env_dup, 0, env_size, env);
+		env_dup = env_cpy(env_dup, 0, env_size);
 		var_index = env_size;
 		env_dup[var_index] = _strdup(tmp_full);
 		env_dup[env_size + 1] = NULL;
-	}
-	else
+	} else
 	{
-		/* Do re-allocation of the variable */
-		var_index = eindex2(var, env);
-		env_dup = env_cpy2(env_dup, 0, var_index, env);
+		var_index = eindex(var);
+		env_dup = env_cpy(env_dup, 0, var_index);
 		env_dup[var_index] = _strdup(tmp_full);
-		env_dup = env_cpy2(env_dup, var_index + 1, env_size, env);
+		env_dup = env_cpy(env_dup, var_index + 1, env_size);
 		env_dup[env_size + 1] = NULL;
 	}
 	free(tmp_full);
-	env = env_dup;
-	return (env);
+	environ = env_dup;
 }
 
+
 /**
- * builtin_unsetenv2 - unsets the environmental variable
+ * builtin_unsetenv - unsets the environmental variable
  * @var: the variable given
- * @env: env gotten from the main
  * Return: nothing
  */
-void builtin_unsetenv2(char *var, char **env)
+void builtin_unsetenv(char *var)
 {
-	(void)env;
-	if (_getenv(var, env))
+	if (_getenv(var))
 	{
 		/* do some unsetting */
 	}

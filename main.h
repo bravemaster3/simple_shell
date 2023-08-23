@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <limits.h>
+extern char **environ;
 
 #define PROMPT "$ "
 #define UNUSED __attribute__((unused))
@@ -25,7 +26,7 @@ int _putchar2(char c, int fd);
 int _puts(char *str);
 int _puts2(char *str, int fd);
 int print_uint(unsigned int n, int fd);
-void print_err(UINT iter, char *cmd, char *message, char **env);
+void print_err(UINT iter, char *cmd, char *message);
 
 /* String operations */
 char *_strdup(char *str);
@@ -54,29 +55,20 @@ int ctokens(char **tokens);
 void free_grid(char **grid, int height);
 
 /* Miscelleanous */
-void exit_exec(char **toks, int n_tok, char *buff, char *p, UINT i, char **ev);
-void not_found(char **tokens, int n_tok, UINT iter, char **env);
+void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter);
+void not_found(char **tokens, int n_tok, UINT iter);
 void handle_signal(int sig);
-char *_getenv(const char *name, char **env);
-char *_which(char *cmd, char **env);
+char *_getenv(const char *name);
+char *_which(char *cmd);
 int is_path(char *str);
 
 /* Builtins */
-char **builtins(char **tokens, int n_tok, char *buffer, UINT iter, char **env);
-void built_exit(char **tokens, int n_tok, char *buffer, UINT iter, char **ev);
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
+void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_env(void);
 int isbuiltin(char *cmd);
 void builtin_setenv(char *var, char *value);
 void builtin_unsetenv(char *var);
-char **builtin_cd(char **tokens, UINT iter, char **env);
-
-/*Temporary for tests*/
-void builtin_env2(char **env);
-unsigned int cenvs2(char **env);
-int eindex2(char *var, char **env);
-char **env_cpy2(char **dest, int sind, int eind, char **env);
-char **builtin_setenv2(char *var, char *value, char **env);
-void builtin_unsetenv2(char *var, char **env);
-void builtin_env2(char **env);
+void builtin_cd(char **tokens, UINT iter);
 
 #endif /* MAIN_H */
