@@ -48,7 +48,7 @@ char **env_cpy(char **dest, int sind, int eind)
 	int i;
 
 	for (i = sind; i < eind; i++)
-		dest[i] = _strdup(environ[i]);
+		dest[i] = environ[i];
 
 	return (dest);
 }
@@ -62,29 +62,29 @@ char **env_cpy(char **dest, int sind, int eind)
 void builtin_setenv(char *var, char *value)
 {
 	char **env_dup;
-	char *tmp;
+	char *tmp, *tmp_full;
 	int env_size = cenvs();
 	int var_index;
 
 	tmp = _strcat(var, "=");
-	env_dup = (char **)malloc((env_size + 1) * sizeof(char *));
+	tmp_full = _strcat(tmp, value);
+	free(tmp);
+	env_dup = malloc((env_size + 1) * sizeof(char *));
 	if (_getenv(var) == NULL)
 	{
-		/* Do create new variable and set it's value */
 		env_dup = env_cpy(env_dup, 0, env_size);
 		var_index = env_size;
-		env_dup[var_index] = _strcat(tmp, value);
+		env_dup[var_index] = _strdup(tmp_full);
 		env_dup[env_size + 1] = NULL;
 	} else
 	{
-		/* Do re-allocation of the variable */
 		var_index = eindex(var);
 		env_dup = env_cpy(env_dup, 0, var_index);
-		env_dup[var_index] = _strcat(tmp, value);
+		env_dup[var_index] = _strdup(tmp_full);
 		env_dup = env_cpy(env_dup, var_index + 1, env_size);
 		env_dup[env_size + 1] = NULL;
 	}
-	free(tmp);
+	free(tmp_full);
 	environ = env_dup;
 }
 
