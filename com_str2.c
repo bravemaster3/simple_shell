@@ -65,3 +65,34 @@ int _strcmp(char *s1, char *s2)
 	}
 	return (ret);
 }
+
+/**
+ * _strncmp - compares at most n characters of two strings,
+ * @s1: pointer to string 1
+ * @s2: pointer to string 2
+ * @n: maximum number of characters to compare
+ * Return: 0 if the first n characters are the same,
+ * the difference between the first different characters otherwise
+ */
+
+int _strncmp(char *s1, char *s2, size_t n)
+{
+	size_t stp = 0;
+	int ret = 0;
+
+	while (*s1 != '\0' && *s2 != '\0' && stp < n)
+	{
+		ret = (*s1) - (*s2);
+		if (*s1 != *s2)
+			return (ret);
+		s1++;
+		s2++;
+		stp++;
+	}
+	if (stp == n || (*s1 == '\0' && *s2 == '\0'))
+		return (0);
+	if (*s1 == '\0')
+		return (-(*s2));
+	else
+		return (*s1);
+}

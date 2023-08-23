@@ -9,12 +9,24 @@
  */
 void checks(char *buff, int n, int mode)
 {
+	int i;
+
 	if (n == -1)
 	{
 		free(buff);
 		if (mode == 1)
 			_putchar('\n');
 		exit(errno);
+	}
+	else
+	{
+		for (i = 0; i < _strlen(buff); i++)
+		{
+			if (_strncmp(buff + i, "#", 1) == 0)
+				buff[i] = '\0';
+			else
+				continue;
+		}
 	}
 }
 
@@ -26,7 +38,8 @@ void checks(char *buff, int n, int mode)
 void wait_on_child(int *status)
 {
 	wait(status);
-	errno = _WEXITSTATUS(*status);
+	if (WIFEXITED(*status))
+		errno = WEXITSTATUS(*status);
 }
 /**
  * free_path_tokens - wrapper for freeing both path and tokens

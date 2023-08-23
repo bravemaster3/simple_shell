@@ -19,8 +19,6 @@ extern char **environ;
 #define UNUSED __attribute__((unused))
 #define UINT unsigned int
 #define RESTR restrict
-#define _WEXITSTATUS(status) (((status) & 0xff00) >> 8)
-
 
 /* Printing char, string and uint*/
 int _putchar(char c);
@@ -40,7 +38,7 @@ char *_substr(char *str, int index);
 int _strsearch(char *hay, char *needle, int index);
 int _strcmp(char *s1, char *s2);
 char *_strtok(char *src, char *delim);
-
+int _strncmp(char *s1, char *s2, size_t n);
 
 /* Memory allocation */
 char *_memcpy(char *dest, char *src, unsigned int n);
@@ -66,6 +64,7 @@ void exit_exec(char **tokens, int n_tok, char *buffer, char *path, UINT iter);
 void not_found(char **tokens, int n_tok, UINT iter);
 void handle_signal(int sig);
 char *_getenv(const char *name);
+int _getenvi(const char *name);
 char *_which(char *cmd);
 int is_path(char *str);
 
@@ -76,6 +75,7 @@ void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
 void builtin_env(void);
 int isbuiltin(char *cmd);
 void builtin_setenv(char *var, char *value);
+void builtin_setenv_old(char *var, char *value);
 void builtin_unsetenv(char *var);
 void builtin_cd(char **tokens, UINT iter);
 
