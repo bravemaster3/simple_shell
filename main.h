@@ -19,6 +19,7 @@ extern char **environ;
 #define UNUSED __attribute__((unused))
 #define UINT unsigned int
 #define RESTR restrict
+#define _WEXISTATUS(status)
 
 /* Printing char, string and uint*/
 int _putchar(char c);
