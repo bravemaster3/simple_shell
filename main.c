@@ -38,8 +38,7 @@ void checks(char *buff, int n, int mode)
 void wait_on_child(int *status)
 {
 	wait(status);
-	if (WIFEXITED(*status))
-		errno = WEXITSTATUS(*status);
+	errno = _WEXITSTATUS(*status);
 }
 /**
  * free_path_tokens - wrapper for freeing both path and tokens
