@@ -19,7 +19,7 @@ exit 98
 ## Own personalized functions
 * getline: fully functional
 
-##NOTES
+## NOTES
 
 * if the argument is only spaces? Token is NULL. Not handled before!! NOW HANDLED, and TASK 1 ALL CHECKED OK
 * Task 2, ALL CHECKED OK
