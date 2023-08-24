@@ -27,3 +27,6 @@ exit 98
 * task 5 passes 1 check out of 3
 * tasks 1, 2, 3, 4, 6 and 8 seems good. Betty also, so, task 0 too. Task 5 might be good. we'll see when the checker is released
 
+
+* Ready for first deadline
+
