@@ -71,9 +71,9 @@ int is_path(char *str);
 
 
 /* Builtins */
-void builtins(char **tokens, int n_tok, char *buffer, UINT iter);
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter, char **env);
 void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter);
-void builtin_env(void);
+void builtin_env(char **env);
 int isbuiltin(char *cmd);
 void builtin_setenv(char *var, char *value);
 void builtin_setenv_old(char *var, char *value);

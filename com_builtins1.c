@@ -24,16 +24,17 @@ int isbuiltin(char *cmd)
  * @n_tok: number of tokens
  * @buffer: the buffer
  * @iter: current iteration
+ * @env: env passed from main
  * Return: nothing
  */
-void builtins(char **tokens, int n_tok, char *buffer, UINT iter)
+void builtins(char **tokens, int n_tok, char *buffer, UINT iter, char **env)
 {
 	char *cmd = tokens[0];
 
 	if (_strcmp(cmd, "exit") == 0)
 		builtin_exit(tokens, n_tok, buffer, iter);
 	else if (_strcmp(cmd, "env") == 0)
-		builtin_env();
+		builtin_env(env);
 	else if (_strcmp(cmd, "setenv") == 0)
 	{
 		if (n_tok < 3 || n_tok > 3)
@@ -98,15 +99,16 @@ void builtin_exit(char **tokens, int n_tok, char *buffer, UINT iter)
 
 /**
  * builtin_env - prints the environment of the system
+ * @env: environment passed from the main
  * Return: nothing
  */
-void builtin_env(void)
+void builtin_env(char **env)
 {
 	int i = 0;
 
-	while (environ[i])
+	while (env[i])
 	{
-		_puts(environ[i]);
+		_puts(env[i]);
 		_putchar('\n');
 		i++;
 	}

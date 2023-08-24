@@ -51,37 +51,34 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
  *
  * Return: a 2D pointer to the tokens...
  */
+
 char **tokenizer(char *buffer, char *delim)
 {
-	char *buff_cpy, *token, **tokens;
-	int n_tok, counter;
+	char *token, **tokens;
+	int n_tok = 0, chs = sizeof(char *);
 
-	buff_cpy = _strdup(buffer);
-	token = _strtok(buff_cpy, delim);
-	if (token == NULL)
-	{
-		free(buff_cpy);
-		return (NULL);
-	}
-	n_tok = 1;
-	while ((token = _strtok(NULL, delim)))
-		n_tok++;
-	free(buff_cpy);
-
-	tokens = (char **)malloc(sizeof(char *) * (n_tok + 1));
+	tokens = (char **)malloc(sizeof(char *));
 	if (tokens == NULL)
 	{
 		perror("Memory allocation failed\n");
 		exit(1);
 	}
 	token = _strtok(buffer, delim);
-	counter = 0;
+	if (token == NULL)
+		return (NULL);
 	while (token)
 	{
-		tokens[counter] = _strdup(token);
+		tokens[n_tok] = _strdup(token);
+		n_tok++;
+		tokens = (char **)_realloc(tokens, chs * (n_tok), chs * (n_tok + 1));
+		if (tokens == NULL)
+		{
+			perror("Memory allocation failed\n");
+			exit(1);
+		}
 		token = _strtok(NULL, delim);
-		counter++;
 	}
+
 	tokens[n_tok] = NULL;
 	return (tokens);
 }
