@@ -20,8 +20,6 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-#include "main.h"
-
 /**
  * _strcat - concatenates two strings
  * @dest: pointer to the first char of destination string
@@ -91,3 +89,4 @@ char *_strdup(char *str)
 
 	return (str_cpy);
 }
+

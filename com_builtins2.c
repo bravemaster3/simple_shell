@@ -58,12 +58,12 @@ char **env_cpy(char **dest, int sind, int eind, int include)
 }
 
 /**
- * builtin_setenv - sets the environmental variable given
+ * builtin_setenv_old - sets the environmental variable given
  * @var: the variable
  * @value: the value of the variable
  * Return: nothing
  */
-void builtin_setenv(char *var, char *value)
+void builtin_setenv_old(char *var, char *value)
 {
 	char **env_dup = NULL;
 	char *tmp = NULL, *tmp_full = NULL;
@@ -81,7 +81,8 @@ void builtin_setenv(char *var, char *value)
 		var_index = env_size;
 		env_dup[var_index] = _strdup(tmp_full);
 		env_dup[new_size - 1] = NULL;
-	} else
+	}
+	else
 	{
 		env_dup = (char **)malloc((env_size + 1) * sizeof(char *));
 		var_index = eindex(var);
@@ -93,7 +94,6 @@ void builtin_setenv(char *var, char *value)
 	free(tmp_full);
 	environ = env_dup;
 }
-
 
 /**
  * builtin_unsetenv - unsets the environmental variable
