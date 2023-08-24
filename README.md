@@ -19,6 +19,9 @@ exit 98
 ## Own personalized functions
 * getline: fully functional
 
+
+
+
 ## NOTES
 
 * if the argument is only spaces? Token is NULL. Not handled before!! NOW HANDLED, and TASK 1 ALL CHECKED OK
