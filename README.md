@@ -19,11 +19,17 @@ exit 98
 ## Own personalized functions
 * getline: fully functional
 
-##NOTES
+
+
+
+## NOTES
 
 * if the argument is only spaces? Token is NULL. Not handled before!! NOW HANDLED, and TASK 1 ALL CHECKED OK
 * Task 2, ALL CHECKED OK
 * We were printing to the stdout even errors... This was causing a lot more errors when using the checker. I have now made _putchar2 and _puts2 which take in also a file descriptor. Now, Task 3 is almost all green! Yey!! Only one left to solve.
 * task 5 passes 1 check out of 3
 * tasks 1, 2, 3, 4, 6 and 8 seems good. Betty also, so, task 0 too. Task 5 might be good. we'll see when the checker is released
+
+
+* Ready for first deadline. Yes!
 
